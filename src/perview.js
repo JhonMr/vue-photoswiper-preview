@@ -61,7 +61,7 @@ const VuePreview = function (opts) {
   opts = opts || {};
   if(!instance) {
     const parent = document.body;
-    const instance = new Constructor({
+    instance = new Constructor({
       el: document.createElement('div'),
       option: opts,
     });

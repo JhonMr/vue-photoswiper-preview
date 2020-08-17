@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'production',
   entry:{
-    'vue-photoswipe-preview':'./src/index.js',
+    'preview':'./src/index.js',
     index: './src/install.js',
   },//打包入口文件名
   output:{

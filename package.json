@@ -1,5 +1,5 @@
 {
-  "name": "vue-photoswipe-perview",
+  "name": "vue-photoswiper-preview",
   "version": "1.0.0",
   "description": "基于photoswipe的vue图片预览组件",
   "main": "index.js",
