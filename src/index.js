@@ -3,7 +3,7 @@
 * Date: 2020/8/10
 * Description:
 */
-import Perview from './perview.js'
+import Preview from './preview.js'
 // promise 拓展
 function allSettled(promises) {
   const wrapped = promises.map(
@@ -24,7 +24,7 @@ function proxyImage(url) {
     image.src = url;
   });
 }
-async function perview(images, opts) {
+async function preview(images, opts) {
   const promises = [];
   images = images.map((item) => {
     if (typeof item == 'string') item = { src: item };
@@ -47,8 +47,8 @@ async function perview(images, opts) {
       images[i].h = h;
     }
   });
-  const instance = Perview(opts);
+  const instance = Preview(opts);
   instance.view(images);
   return instance;
 }
-export default perview;
+export default preview;

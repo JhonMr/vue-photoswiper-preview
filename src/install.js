@@ -3,7 +3,10 @@
  * Description:
  *
  */
-import perview from './index.js'
+import functional from './index.js'
+
+export const preview = functional;
+
 const defaultOpts = {
   getThumbBoundsFns: function(el) {
     return function(index) {
@@ -19,16 +22,16 @@ const defaultOpts = {
   }
 }
 const imageGroup = {}
-const vuePhotosPerview = {
+const vuePhotosPreview = {
   install(Vue, opts = {}) {
     Object.assign(opts, defaultOpts);
     Vue.directive('perview', {
-      bind(el, {value}) {console.log('bind')
+      bind(el, {value}) {
         el.dataset.perview = value;
         if(!imageGroup[value]) imageGroup[value] = [];
         imageGroup[value].push(el.src);
       },
-      unbind(el, {value}) { console.log('unbind')
+      unbind(el, {value}) {
         if(!imageGroup[value]) return ;
         const index = imageGroup[value].indexOf(el.src)
         index > -1 && imageGroup[value].splice(index, 1);
@@ -38,11 +41,11 @@ const vuePhotosPerview = {
       if(e.target.tagName.toUpperCase() == 'IMG' && e.target.dataset.perview !== undefined) {
         const images = imageGroup[e.target.dataset.perview];
         opts.index = images.indexOf(e.target.src);
-        opts.getThumbBoundsFn = opts.getThumbBoundsFn || opts.getThumbBoundsFns(e.target);
-        perview(images, opts)
+        opts.getThumbBoundsFn = opts.getThumbBoundsFns(e.target);
+        functional(images, opts)
       }
     }, false);
   }
 }
 
-export default vuePhotosPerview
+export default vuePhotosPreview

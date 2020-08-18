@@ -7,7 +7,6 @@ module.exports = {
   mode: 'production',
   entry:{
     'preview':'./src/index.js',
-    index: './src/install.js',
   },//打包入口文件名
   output:{
     path: path.resolve(__dirname, 'lib'),
@@ -75,6 +74,7 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
+    new webpack.optimize.SplitChunksPlugin()
   ],
   devtool:'none'
 }

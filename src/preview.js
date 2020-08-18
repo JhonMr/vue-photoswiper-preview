@@ -7,7 +7,7 @@
 import Vue from 'vue';
 import PhotoSwipe from 'photoswipe/dist/photoswipe';
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
-import PreviewComponent from './perview.vue';
+import PreviewComponent from './preview.vue';
 
 const defaultOptions = {
   addCaptionHTMLFn(item, captionEl, isFake) {
@@ -31,14 +31,13 @@ const defaultOptions = {
 };
 let instance;
 const Constructor = Vue.extend(PreviewComponent);
-Constructor.prototype.view = function (imgs) {
-  this.openPhotoSwipe(imgs);
+Constructor.prototype.view = function (imgs, options) {
+  this.openPhotoSwipe(imgs, options);
 };
-Constructor.prototype.openPhotoSwipe = function (images) {
+Constructor.prototype.openPhotoSwipe = function (images, options = {}) {
   const pswpElement = document.querySelector('.pswp');
-  const options = this.$options.option;
-  Object.assign(options, defaultOptions);
-  const gallery = new PhotoSwipe(pswpElement, PhotoSwipeUIDefault, images, options);
+  const mergeOptions = Object.assign(options, this.options, defaultOptions);
+  const gallery = new PhotoSwipe(pswpElement, PhotoSwipeUIDefault, images, mergeOptions);
   this.photoswipe = gallery;
   gallery.init();
 };
@@ -63,10 +62,10 @@ const VuePreview = function (opts) {
     const parent = document.body;
     instance = new Constructor({
       el: document.createElement('div'),
-      option: opts,
     });
     parent.appendChild(instance.$el);
   }
+  instance.options = opts;
   return instance;
 };
 

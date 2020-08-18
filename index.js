@@ -3,5 +3,5 @@
  * Description:
  *
  */
-import photoPreview from './lib/index.js'
+import photoPreview from './lib/preview.js'
 export default photoPreview
