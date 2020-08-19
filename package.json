@@ -1,22 +1,22 @@
 {
   "name": "vue-photoswiper-preview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于photoswipe的vue图片预览组件",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.dev.config.js --open --hot",
     "build": "webpack --config webpack.build.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JhonMr/vue-photoswipe-perview.git"
+    "url": "git+https://github.com/JhonMr/vue-photoswipe-preview.git"
   },
   "author": "jhonMr<jhonmrli@foxmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/JhonMr/vue-photoswipe-perview/issues"
+    "url": "https://github.com/JhonMr/vue-photoswipe-preview/issues"
   },
-  "homepage": "https://github.com/JhonMr/vue-photoswipe-perview#readme",
+  "homepage": "https://github.com/JhonMr/vue-photoswipe-preview#readme",
   "dependencies": {
     "css-loader": "^4.2.1",
     "photoswipe": "^4.1.3"
