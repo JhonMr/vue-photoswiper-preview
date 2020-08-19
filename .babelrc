@@ -5,21 +5,6 @@
     }]
   ],
   "plugins": [
-    "@babel/plugin-proposal-function-bind",
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/transform-arrow-functions",
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-syntax-optional-chaining",
-    ["@babel/plugin-proposal-decorators", {
-      "legacy": true
-    }],
-    ["@babel/plugin-proposal-class-properties", {"loose": false}],
-    "@babel/plugin-syntax-dynamic-import",
-    ["babel-plugin-transform-class-properties", { "spec": true }]
-  ],
-  "env": {
-    "development": {
-      "plugins": []
-    }
-  }
+    "@babel/plugin-transform-runtime"
+  ]
 }

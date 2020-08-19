@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import preview from '../src/install';
+import preview from '../src/install.js';
 
 const opts = {
   mainClass : 'pswp--minimal--dark',

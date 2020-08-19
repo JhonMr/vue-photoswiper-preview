@@ -1,16 +1,12 @@
 const path = require('path');
 var webpack = require('webpack')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
 module.exports = {
-  mode: 'production',
-  entry:{
-    'preview':'./src/index.js',
-  },//打包入口文件名
+  entry:'./src/install.js',
   output:{
-    path: path.resolve(__dirname, 'lib'),
-    filename:'[name].js',
+    path: path.resolve(__dirname, './lib'),
+    filename:'index.js',
     library: 'vue-photoswipe-preview',
     libraryTarget: 'umd',
     umdNamedDefine: true
@@ -22,9 +18,6 @@ module.exports = {
         exclude:/node_modules/,
         use:{
           loader:'babel-loader',
-          options:{
-            presets:['@babel/preset-env']
-          }
         }
       },
       {
@@ -59,10 +52,8 @@ module.exports = {
       }
     ],
   },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true,
-    overlay: true
+  externals: {
+    Vue: 'vue'
   },
   plugins: [
     new VueLoaderPlugin(),
@@ -73,8 +64,23 @@ module.exports = {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    }),
-    new webpack.optimize.SplitChunksPlugin()
+    })
   ],
-  devtool:'none'
+  optimization:{
+    minimizer:[
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          output: {
+            comments: false
+          },
+          compress: {
+          //  warnings: false,
+            drop_debugger: true,
+            drop_console: true
+          }
+        }
+      })
+    ]
+  },
+  devtool: '#source-map'
 }
