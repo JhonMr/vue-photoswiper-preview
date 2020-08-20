@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-  import { preview } from '../src/install';
+  import { preview } from '../lib/index';
   export default {
     name: 'Home',
     components: {
