@@ -4,8 +4,8 @@
 
     <br>
 
-    <img v-perview="1" :src="images[0]" />
-    <img v-perview="1" :src="images[1]" />
+    <img v-preview="1" :src="images[0]" />
+    <img v-preview="1" :src="images[1]" />
   </div>
 </template>
 <script>

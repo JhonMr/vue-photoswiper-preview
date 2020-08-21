@@ -1,5 +1,6 @@
 const path = require('path');
 var webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   output:{
     path: path.resolve(__dirname, './lib'),
     filename:'index.js',
-    library: 'vue-photoswipe-preview',
+    library: 'vue-photoswiper-preview',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -28,41 +29,36 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
+          'resolve-url-loader'
         ]
 
       },
       {
-        test: /\.(sa|sc)ss$/,
-        use: [
-          'vue-style-loader',
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
-      },
-      /*{
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 1024,
-          filename: '[name].[ext]'
-        }
-      }*/
-      {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: 'images/[name].[hash].[ext]'
+          name: '[name].[hash].[ext]',
+          outputPath: '/',
+          publicPath: './'
         }
       }
     ],
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
   },
   externals: {
     Vue: 'vue'
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    }),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {

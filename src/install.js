@@ -25,7 +25,7 @@ const imageGroup = {}
 const vuePhotosPreview = {
   install(Vue, opts = {}) {
     Object.assign(opts, defaultOpts);
-    Vue.directive('perview', {
+    Vue.directive('preview', {
       bind(el, {value}) {
         el.dataset.perview = value;
         if(!imageGroup[value]) imageGroup[value] = [];
