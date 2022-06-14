@@ -3,13 +3,11 @@
  * Description:
  *
  */
-import functional from './index.js'
-
-export const preview = functional;
+import preview from './preview.js'
 
 const defaultOpts = {
-  getThumbBoundsFns: function(el) {
-    return function(index) {
+  getThumbBoundsFns: function (el) {
+    return function (index) {
       const thumbnail = el;
       const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
       const rect = thumbnail.getBoundingClientRect();
@@ -21,31 +19,34 @@ const defaultOpts = {
     }
   }
 }
+let Vue;
 const imageGroup = {}
-const vuePhotosPreview = {
-  install(Vue, opts = {}) {
-    Object.assign(opts, defaultOpts);
-    Vue.directive('preview', {
-      bind(el, {value}) {
-        el.dataset.perview = value;
-        if(!imageGroup[value]) imageGroup[value] = [];
-        imageGroup[value].push(el.src);
-      },
-      unbind(el, {value}) {
-        if(!imageGroup[value]) return ;
-        const index = imageGroup[value].indexOf(el.src)
-        index > -1 && imageGroup[value].splice(index, 1);
-      }
-    });
-    document.addEventListener('click', function(e) {
-      if(e.target.tagName.toUpperCase() == 'IMG' && e.target.dataset.perview !== undefined) {
-        const images = imageGroup[e.target.dataset.perview];
-        opts.index = images.indexOf(e.target.src);
-        opts.getThumbBoundsFn = opts.getThumbBoundsFns(e.target);
-        functional(images, opts)
-      }
-    }, false);
-  }
+
+function install(_Vue, opts = {}) {
+  Vue = _Vue
+  Object.assign(opts, defaultOpts);
+  Vue.directive('preview', {
+    bind(el, { value }) {
+      el.dataset.perview = value;
+      if (!imageGroup[value]) imageGroup[value] = [];
+      imageGroup[value].push(el.src);
+    },
+    unbind(el, { value }) {
+      if (!imageGroup[value]) return;
+      const index = imageGroup[value].indexOf(el.src)
+      index > -1 && imageGroup[value].splice(index, 1);
+    }
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.tagName.toUpperCase() == 'IMG' && e.target.dataset.perview !== undefined) {
+      const images = imageGroup[e.target.dataset.perview];
+      opts.index = images.indexOf(e.target.src);
+      opts.getThumbBoundsFn = opts.getThumbBoundsFns(e.target);
+      preview(images, opts, Vue)
+    }
+  }, false);
+  Vue.prototype.$preview = preview;
 }
 
-export default vuePhotosPreview
+
+export default install

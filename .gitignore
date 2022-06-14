@@ -1,4 +1,6 @@
 .idea
+lib/
+.lh
 node_modules/
 npm-debug.log
 webpack.config.js

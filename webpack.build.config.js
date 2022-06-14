@@ -1,24 +1,26 @@
 const path = require('path');
-var webpack = require('webpack')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
-  entry:'./src/install.js',
-  output:{
+  mode: 'production',
+  entry: './src/index.js',
+  output: {
     path: path.resolve(__dirname, './lib'),
-    filename:'index.js',
+    filename: 'index.js',
     library: 'vue-photoswiper-preview',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
-  module:{
-    rules:[
+  module: {
+    rules: [
       {
-        test:/\.js?$/i,
-        exclude:/node_modules/,
-        use:{
-          loader:'babel-loader',
+        test: /\.js?$/i,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
         }
       },
       {
@@ -29,7 +31,13 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          MiniCssExtractPlugin.loader,
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              //publicPath: 'images'
+            }
+          },
+
           'css-loader',
           'resolve-url-loader'
         ]
@@ -40,8 +48,7 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: '[name].[hash].[ext]',
-          outputPath: '/',
-          publicPath: './'
+          outputPath: 'images',
         }
       }
     ],
@@ -59,6 +66,7 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
+    new OptimizeCssAssetsPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -69,15 +77,15 @@ module.exports = {
       minimize: true
     })
   ],
-  optimization:{
-    minimizer:[
+  optimization: {
+    minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
           output: {
             comments: false
           },
           compress: {
-          //  warnings: false,
+            //  warnings: false,
             drop_debugger: true,
             drop_console: true
           }

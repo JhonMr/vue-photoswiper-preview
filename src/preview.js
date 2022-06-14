@@ -1,72 +1,53 @@
 /*
 * Author: LJH
-* Date: 2020/8/6
+* Date: 2020/8/10
 * Description:
 */
-
-import Vue from 'vue';
-import PhotoSwipe from 'photoswipe/dist/photoswipe';
-import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
-import PreviewComponent from './preview.vue';
-
-const defaultOptions = {
-  addCaptionHTMLFn(item, captionEl, isFake) {
-    if (!item.title) {
-      captionEl.children[0].innerText = '';
-      return false;
-    }
-    captionEl.children[0].innerHTML = item.title;
-    return true;
-  },
-  showHideOpacity: true,
-  history: false,
-  shareEl: false,
-  maxSpreadZoom: 3,
-  getDoubleTapZoom(isMouseClick, item) {
-    if (isMouseClick) {
-      return 1.5;
-    }
-    return item.initialZoomLevel < 0.7 ? 1 : 1.5;
-  },
-};
-let instance;
-const Constructor = Vue.extend(PreviewComponent);
-Constructor.prototype.view = function (imgs, options) {
-  this.openPhotoSwipe(imgs, options);
-};
-Constructor.prototype.openPhotoSwipe = function (images, options = {}) {
-  const pswpElement = document.querySelector('.pswp');
-  const mergeOptions = Object.assign(options, this.options, defaultOptions);
-  const gallery = new PhotoSwipe(pswpElement, PhotoSwipeUIDefault, images, mergeOptions);
-  this.photoswipe = gallery;
-  gallery.init();
-};
-Constructor.prototype.doDestory = function () {
-  const vm = this;
-  setTimeout(() => {
-    if (vm.$el && vm.$el.parentNode) vm.$el.parentNode.removeChild(vm.$el);
-    vm.$destory();
-  }, 500);
-};
-Constructor.prototype.close = function() {
-  this.photoswipe.close();
+import Preview from './preview/index.js'
+// promise 拓展
+function allSettled(promises) {
+  const wrapped = promises.map(
+    (p) => Promise.resolve(p)
+      .then((val) => ({ status: 'fulfilled', value: val }), (err) => ({ status: 'rejected', reason: err })),
+  );
+  return Promise.all(wrapped);
 }
-Constructor.prototype.destroy = function() {
-  this.photoswipe.destroy();
-  this.doDestory();
+function proxyImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = function (event) {
+      resolve(image);
+    };
+    image.onerror = function (err) {
+      reject(err);
+    };
+    image.src = url;
+  });
 }
-
-const VuePreview = function (opts) {
-  opts = opts || {};
-  if(!instance) {
-    const parent = document.body;
-    instance = new Constructor({
-      el: document.createElement('div'),
-    });
-    parent.appendChild(instance.$el);
-  }
-  instance.options = opts;
+export default async function preview(images, opts, Vue) {
+  const promises = [];
+  images = images.map((item) => {
+    if (typeof item == 'string') item = { src: item };
+    if (!item.w || !item.h) {
+      promises.push(proxyImage(item.src));
+    }
+    else promises.push(null);
+    return item;
+  });
+  const result = await allSettled(promises);
+  result.map((item, i) => {
+    if (item) {
+      let w = 100; let
+        h = 100;
+      if (item.status == 'fulfilled') {
+        w = item.value.width;
+        h = item.value.height;
+      }
+      images[i].w = w;
+      images[i].h = h;
+    }
+  });
+  const instance = Preview(opts, Vue);
+  instance.view(images);
   return instance;
-};
-
-export default VuePreview;
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "webpack.config.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1655180017193,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1655180017193,
+            "name": "Commit-0",
+            "content": "var path = require('path')\r\nvar webpack = require('webpack')\r\nconst VueLoaderPlugin = require('vue-loader/lib/plugin');\r\nconst UglifyJsPlugin = require('uglifyjs-webpack-plugin');\r\nmodule.exports = {\r\n  entry: './src/index.js',\r\n  output: {\r\n    path: path.resolve(__dirname, './lib'),\r\n    filename: 'index.js',\r\n    library: 'vue-photo-preview',\r\n    libraryTarget: 'umd',\r\n    umdNamedDefine: true\r\n  },\r\n  module: {\r\n    rules: [\r\n      {\r\n        test: /\\.js?$/i,\r\n        exclude: /node_modules/,\r\n        use: {\r\n          loader: 'babel-loader',\r\n        }\r\n      },\r\n      {\r\n        test: /\\.vue$/,\r\n        loader: 'vue-loader'\r\n      },\r\n      {\r\n        test: /\\.css$/,\r\n        use: [\r\n          'vue-style-loader',\r\n          'style-loader',\r\n          'css-loader',\r\n        ]\r\n\r\n      },\r\n      {\r\n        test: /\\.(sa|sc)ss$/,\r\n        use: [\r\n          'vue-style-loader',\r\n          'style-loader',\r\n          'css-loader',\r\n          'sass-loader',\r\n        ],\r\n      },\r\n      {\r\n        test: /\\.(png|jpg|gif|svg)$/,\r\n        loader: 'url-loader',\r\n        options: {\r\n          limit: 1024,\r\n          filename: '[name].[ext]'\r\n        }\r\n      }\r\n    ]\r\n  },\r\n  externals: {\r\n    Vue: 'vue'\r\n  },\r\n  plugins: [\r\n    new VueLoaderPlugin(),\r\n    new webpack.DefinePlugin({\r\n      'process.env': {\r\n        NODE_ENV: '\"production\"'\r\n      }\r\n    }),\r\n    new webpack.LoaderOptionsPlugin({\r\n      minimize: true\r\n    })\r\n  ],\r\n  optimization: {\r\n    minimizer: [\r\n      new UglifyJsPlugin({\r\n        uglifyOptions: {\r\n          output: {\r\n            comments: false\r\n          },\r\n          compress: {\r\n            //  warnings: false,\r\n            drop_debugger: true,\r\n            drop_console: true\r\n          }\r\n        }\r\n      })\r\n    ]\r\n  },\r\n  devtool: '#source-map',\r\n}\r\n\r\n"
+        }
+    ]
+}

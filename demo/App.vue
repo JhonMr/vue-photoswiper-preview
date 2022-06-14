@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div><a class="link" @click="actionPreview">show preview</a></div>
+    <div><a class="link pointer" @click="actionPreview">show preview</a></div>
 
     <br>
 
@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-  import { preview } from '../lib/index';
+import { preview }  from '../src/index';
   export default {
     name: 'Home',
     components: {
@@ -18,16 +18,15 @@
     data() {
       return {
         images: [
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597576404846&di=adc1ed7d2364657f4103a512515b0171&imgtype=0&src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_bt%2F0%2F8057392277%2F1000',
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3609936045,1071990311&fm=26&gp=0.jpg',
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597768838280&di=ee5ecb80eddd2a1c40ce688c2dc28821&imgtype=0&src=http%3A%2F%2Fdingyue.ws.126.net%2F2019%2F04%2F11%2Fa0fc9e78c3104b1999e61b3dca131864.jpeg',
+          './demo/image/test1.jpeg',
+          './demo/image/test3.jpeg'
         ],
-        changeSrc: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1650793918,2971157994&fm=26&gp=0.jpg',
+        changeSrc: './demo/image/test2.jpeg',
       }
     },
     methods: {
       actionPreview() {
-        const perviewInstance = preview(this.images, {index: 1});
+        const perviewInstance = preview(this.images, {index: 1}, this.constructor);
         let photoswipe
         perviewInstance
             .then(v=>{
