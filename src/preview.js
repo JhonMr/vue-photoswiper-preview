@@ -4,6 +4,7 @@
 * Description:
 */
 import Preview from './preview/index.js'
+import loadingImg from './assets/loading_small.gif'
 // promise 拓展
 function allSettled(promises) {
   const wrapped = promises.map(
@@ -12,6 +13,19 @@ function allSettled(promises) {
   );
   return Promise.all(wrapped);
 }
+
+/* async、await中间转换函数
+ *@param promise
+ * */
+export function to(promises) {
+  if (promises && promises.then) {
+    return promises
+      .then((data) => [null, data])
+      .catch((err) => [err]);
+  }
+  return [null, promises];
+}
+
 function proxyImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -24,7 +38,16 @@ function proxyImage(url) {
     image.src = url;
   });
 }
+
+
 export default async function preview(images, opts, Vue) {
+  const instance = Preview(opts, Vue);
+  let [_, loadingImage] = await to(proxyImage(loadingImg));
+  if (loadingImage) {
+    loadingImage.w = loadingImage.width;
+    loadingImage.h = loadingImage.height;
+  }
+  instance.view([loadingImage || new Image()]);
   const promises = [];
   images = images.map((item) => {
     if (typeof item == 'string') item = { src: item };
@@ -47,7 +70,7 @@ export default async function preview(images, opts, Vue) {
       images[i].h = h;
     }
   });
-  const instance = Preview(opts, Vue);
-  instance.view(images);
+  instance.photoswipe.items.splice(0, 1, ...images);
+  instance.photoswipe.updateSize(true);
   return instance;
 }

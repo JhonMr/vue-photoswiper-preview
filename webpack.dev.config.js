@@ -41,11 +41,12 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url-loader',
         options: {
           limit: 1024,
-          filename: '[name].[ext]'
+          filename: '[name].[ext]',
+          esModule: false
         }
       },
       {
@@ -56,7 +57,7 @@ module.exports = {
   },
   plugins: [
     new HTMLPlugin({
-      template:'./demo/index.html',
+      template: './demo/index.html',
     }),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
