@@ -1,6 +1,6 @@
 {
   "name": "vue-photoswiper-preview",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "基于photoswipe的vue图片预览组件",
   "main": "lib/index.js",
   "scripts": {
